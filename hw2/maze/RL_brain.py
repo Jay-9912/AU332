@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 import random
-# random.seed(0)
-# np.random.seed(0)
+SEED=0
+random.seed(SEED)
+np.random.seed(SEED)
 class Agent:
     ### START CODE HERE ###
 
@@ -12,11 +13,11 @@ class Agent:
         self.epsilon_min = 0
         self.q_table={}
         self.model=env_model()
-        self.STEPS=500
-        self.step = 0
+        # self.STEPS=500
+        # self.step = 0
         self.gamma = 0.7
         self.alpha = 0.1
-        self.N=10
+        self.N=20
 
     def choose_action(self, s): 
         state=(s[0],s[1],s[2],s[3],s[4])
@@ -27,9 +28,9 @@ class Agent:
             action = np.random.choice(np.where(self.q_table[state]>=0.0)[0])
         else:
             action=np.random.choice(np.where(self.q_table[state]==np.max(self.q_table[state]))[0])
-        self.step+=1
+        # self.step+=1
         if self.epsilon>self.epsilon_min:
-            self.epsilon-=(self.epsilon-self.epsilon_min)/500
+            self.epsilon-=(self.epsilon-self.epsilon_min)/70
         return action
 
     def learn(self,s,a,r,s_,done):
