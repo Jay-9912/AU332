@@ -1,37 +1,3 @@
-Skip to content
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@Jay-9912 
-strawlab
-/
-python-pcl
-55
-1.3k530
-Code
-Issues
-220
-Pull requests
-15
-Actions
-Projects
-Wiki
-Security
-Insights
-python-pcl/setup.py /
-@Sirokujira
-Sirokujira install module add mock
-…
-Latest commit 1d83d2d on 2 Jun 2019
- History
- 8 contributors
-@Sirokujira@larsmans@nzjrs@martinResearch@blootsvoets@jiskattema@colincsl@chrisidefix
-900 lines (824 sloc)  86.1 KB
-  
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 from collections import defaultdict
@@ -932,15 +898,3 @@ setup(name='python-pcl',
       cmdclass={'build_ext': build_ext},
       data_files=data_files
       )
-© 2020 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
