@@ -32,9 +32,8 @@ except ImportError:
 try:
     import rospy
     import moveit_commander
-    ROS_ENABLED = True
 except ImportError:
-    ROS_ENABLED = False
+    pass
 
 try:
     from mayavi import mlab
@@ -42,17 +41,19 @@ except ImportError:
     mlab = []
 
 """
-Copyright ©2017. The Regents of the University of California (Regents). All Rights Reserved.
+Copyright 漏2017. The Regents of the University of California (Regents). All Rights Reserved.
 Permission to use, copy, modify, and distribute this software and its documentation for educational,
 research, and not-for-profit purposes, without fee and without a signed licensing agreement, is
 hereby granted, provided that the above copyright notice, this paragraph and the following two
 paragraphs appear in all copies, modifications, and distributions. Contact The Office of Technology
 Licensing, UC Berkeley, 2150 Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-
 7201, otl@berkeley.edu, http://ipira.berkeley.edu/industry-info for commercial licensing opportunities.
+
 IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
 INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF
 THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF REGENTS HAS BEEN
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
 THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 PURPOSE. THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
@@ -69,6 +70,7 @@ Author: Jeff Mahler
 class GraspSampler:
     """ Base class for various methods to sample a number of grasps on an object.
     Should not be instantiated directly.
+
     Attributes
     ----------
     gripper : :obj:`RobotGripper`
@@ -107,6 +109,7 @@ class GraspSampler:
         """
         Create a list of candidate grasps for a given object.
         Must be implemented for all grasp sampler classes.
+
         Parameters
         ---------
         graspable : :obj:`GraspableObject3D`
@@ -121,6 +124,7 @@ class GraspSampler:
     def generate_grasps_stable_poses(self, graspable, stable_poses, target_num_grasps=None, grasp_gen_mult=5,
                                      max_iter=3, sample_approach_angles=False, vis=False, **kwargs):
         """Samples a set of grasps for an object, aligning the approach angles to the object stable poses.
+
         Parameters
         ----------
         graspable : :obj:`GraspableObject3D`
@@ -159,6 +163,7 @@ class GraspSampler:
     def generate_grasps(self, graspable, target_num_grasps=None, grasp_gen_mult=5, max_iter=3,
                         sample_approach_angles=False, vis=False, **kwargs):
         """Samples a set of grasps for an object.
+
         Parameters
         ----------
         graspable : :obj:`GraspableObject3D`
@@ -173,6 +178,7 @@ class GraspSampler:
             whether or not to sample approach angles
         vis : bool
             whether show the grasp on picture
+
         Return
         ------
         :obj:`list` of :obj:`ParallelJawPtGrasp3D`
@@ -467,6 +473,7 @@ class UniformGraspSampler(GraspSampler):
     def sample_grasps(self, graspable, num_grasps, vis=False, max_num_samples=1000, **kwargs):
         """
         Returns a list of candidate grasps for graspable object using uniform point pairs from the SDF
+
         Parameters
         ----------
         graspable : :obj:`GraspableObject3D`
@@ -475,6 +482,7 @@ class UniformGraspSampler(GraspSampler):
             the number of grasps to generate
         vis :
         max_num_samples :
+
         Returns
         -------
         :obj:`list` of :obj:`ParallelJawPtGrasp3D`
@@ -533,6 +541,7 @@ class GaussianGraspSampler(GraspSampler):
         """
         Returns a list of candidate grasps for graspable object by Gaussian with
         variance specified by principal dimensions.
+
         Parameters
         ----------
         graspable : :obj:`GraspableObject3D`
@@ -543,6 +552,7 @@ class GaussianGraspSampler(GraspSampler):
             the number of sigmas on the tails of the Gaussian for each dimension
         vis : bool
             visualization
+
         Returns
         -------
         :obj:`list` of obj:`ParallelJawPtGrasp3D`
@@ -628,6 +638,7 @@ class AntipodalGraspSampler(GraspSampler):
 
     def sample_from_cone(self, n, tx, ty, num_samples=1):
         """ Samples directoins from within the friction cone using uniform sampling.
+
         Parameters
         ----------
         n : 3x1 normalized :obj:`numpy.ndarray`
@@ -638,6 +649,7 @@ class AntipodalGraspSampler(GraspSampler):
             tangent y vector
         num_samples : int
             number of directions to sample
+
         Returns
         -------
         v_samples : :obj:`list` of 3x1 :obj:`numpy.ndarray`
@@ -656,6 +668,7 @@ class AntipodalGraspSampler(GraspSampler):
         """
         Checks whether or not a direction is in the friction cone.
         This is equivalent to whether a grasp will slip using a point contact model.
+
         Parameters
         ----------
         cone : 3xN :obj:`numpy.ndarray`
@@ -664,6 +677,7 @@ class AntipodalGraspSampler(GraspSampler):
             outward pointing surface normal vector at c1
         v : 3x1 :obj:`numpy.ndarray`
             direction vector
+
         Returns
         -------
         in_cone : bool
@@ -684,6 +698,7 @@ class AntipodalGraspSampler(GraspSampler):
 
     def sample_grasps(self, graspable, num_grasps, vis=False, **kwargs):
         """Returns a list of candidate grasps for graspable object.
+
         Parameters
         ----------
         graspable : :obj:`GraspableObject3D`
@@ -692,6 +707,7 @@ class AntipodalGraspSampler(GraspSampler):
             number of grasps to sample
         vis : bool
             whether or not to visualize progress, for debugging
+
         Returns
         -------
         :obj:`list` of :obj:`ParallelJawPtGrasp3D`
@@ -806,6 +822,7 @@ class GpgGraspSampler(GraspSampler):
     def sample_grasps(self, graspable, num_grasps, vis=False, max_num_samples=30, **kwargs):
         """
         Returns a list of candidate grasps for graspable object using uniform point pairs from the SDF
+
         Parameters
         ----------
         graspable : :obj:`GraspableObject3D`
@@ -814,6 +831,7 @@ class GpgGraspSampler(GraspSampler):
             the number of grasps to generate
         vis :
         max_num_samples :
+
         Returns
         -------
         :obj:`list` of :obj:`ParallelJawPtGrasp3D`
@@ -983,6 +1001,7 @@ class PointGraspSampler(GraspSampler):
     def sample_grasps(self, graspable, num_grasps, vis=False, max_num_samples=1000, **kwargs):
         """
         Returns a list of candidate grasps for graspable object using uniform point pairs from the SDF
+
         Parameters
         ----------
         graspable : :obj:`GraspableObject3D`
@@ -991,6 +1010,7 @@ class PointGraspSampler(GraspSampler):
             the number of grasps to generate
         vis :
         max_num_samples :
+
         Returns
         -------
         :obj:`list` of :obj:`ParallelJawPtGrasp3D`
@@ -1221,6 +1241,7 @@ class OldPointGraspSampler(GraspSampler):
     def sample_grasps(self, graspable, num_grasps, vis=False, max_num_samples=1000, **kwargs):
         """
         Returns a list of candidate grasps for graspable object using uniform point pairs from the SDF
+
         Parameters
         ----------
         graspable : :obj:`GraspableObject3D`
@@ -1229,6 +1250,7 @@ class OldPointGraspSampler(GraspSampler):
             the number of grasps to generate
         vis :
         max_num_samples :
+
         Returns
         -------
         :obj:`list` of :obj:`ParallelJawPtGrasp3D`
@@ -1381,14 +1403,17 @@ class GpgGraspSamplerPcl(GraspSampler):
                       **kwargs):
         """
         Returns a list of candidate grasps for graspable object using uniform point pairs from the SDF
+
         Parameters
         ----------
         point_cloud :
         all_normal :
         num_grasps : int
             the number of grasps to generate
+
         show_final_grasp :
         max_num_samples :
+
         Returns
         -------
         :obj:`list` of :obj:`ParallelJawPtGrasp3D`
@@ -1397,7 +1422,7 @@ class GpgGraspSamplerPcl(GraspSampler):
         params = {
             'num_rball_points': 27,  # FIXME: the same as meshpy..surface_normal()
             'num_dy': 10,  # number
-            'dtheta': 10,  # unit degree
+            'dtheta': 3,  # unit degree
             'range_dtheta': 90,
             'debug_vis': False,
             'r_ball': self.gripper.hand_height,
@@ -1427,15 +1452,13 @@ class GpgGraspSamplerPcl(GraspSampler):
             # end of modification 5
 
             # for ros, we neded to judge if the robot is at HOME
-            if ROS_ENABLED:
-                if rospy.get_param("/robot_at_home") == "false":
-                    robot_at_home = False
-                else:
-                    robot_at_home = True
-            else:
-                robot_at_home = True
+
+            #if rospy.get_param("/robot_at_home") == "false":
+                #robot_at_home = False
+            #else:
+            robot_at_home = True
             if not robot_at_home:
-                rospy.loginfo("robot is moving! wait untill it go home. Return empty gpg!")
+                #rospy.loginfo("robot is moving! wait untill it go home. Return empty gpg!")
                 return []
             scipy.random.seed()  # important! without this, the worker will get a pseudo-random sequences.
             ind = np.random.choice(points_for_sample.shape[0], size=1, replace=False)
@@ -1543,18 +1566,24 @@ class GpgGraspSamplerPcl(GraspSampler):
                                                       tmp_major_pc, minor_pc])
 
                     if len(dy_potentials) != 0:
+                        #print('congratulation')
                         # we only take the middle grasp from dy direction.
                         center_dy = dy_potentials[int(np.ceil(len(dy_potentials) / 2) - 1)]
                         # we check if the gripper has a potential to collide with the table
                         # by check if the gripper is grasp from a down to top direction
+                        #print('hand depth:',self.gripper.hand_depth)
+                        #print('center_dy')
+                        #print(center_dy)
                         finger_top_pos = center_dy[0] + center_dy[1] * self.gripper.hand_depth
                         # [- self.gripper.hand_depth * 0.5] means we grasp objects as a angel larger than 30 degree
-                        if finger_top_pos[2] < center_dy[0][2] - self.gripper.hand_depth * 0.5:
+                        if True:#finger_top_pos[2] < center_dy[0][2] - self.gripper.hand_depth * 0.5:
                             potential_grasp.append(center_dy)
+                        #if len(potential_grasp)!=0:
+                            #print('congratu')
 
                 approach_dist = self.gripper.hand_depth  # use gripper depth
                 num_approaches = int(approach_dist / params['approach_step'])
-
+                print(len(potential_grasp),end=' ')
                 for ptg in potential_grasp:
                     for approach_s in range(num_approaches):
                         tmp_grasp_bottom_center = ptg[1] * approach_s * params['approach_step'] + ptg[0]
@@ -1595,6 +1624,7 @@ class GpgGraspSamplerPcl(GraspSampler):
                                                                          hand_points, "p_open")
                             is_collide = self.check_collide(tmp_grasp_bottom_center_modify, tmp_grasp_normal,
                                                             tmp_major_pc, minor_pc, all_points, hand_points)
+                            print(len(open_points),end='_')
                             if (len(open_points) > 10) and not is_collide:
                                 # here 10 set the minimal points in a grasp, we can set a parameter later
                                 processed_potential_grasp.append([tmp_grasp_bottom_center, tmp_grasp_normal,
